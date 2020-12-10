@@ -5,8 +5,8 @@ import Item from '../item/item';
 function PriceBoxes (props) {
     var boxes = []
     var i;
-    var step = (parseFloat(props.max)-parseFloat(props.min))/10;
-    for (i=0;i<10;i++) {
+    var step = (parseFloat(props.max)-parseFloat(props.min))/props.results;
+    for (i=0;i<props.results;i++) {
         var start = i*step;
         var end = i*step+step;
         boxes.push(<th>{start}€ - {end}€</th>);
@@ -17,7 +17,7 @@ function PriceBoxes (props) {
 function Distribution (props) {
     var i;
     var boxes = []
-    for (i=0;i<10;i++) {
+    for (i=0;i<props.results;i++) {
         var distribution = Math.floor(Math.random() * 100);
         boxes.push(<td>{distribution}%</td>);
     }
@@ -35,10 +35,10 @@ export default function Results () {
                 </tfoot>
                 <tbody>
                     <tr>
-                        <PriceBoxes min="0" max="1000"/>
+                        <PriceBoxes min="0" max="1000" results="4" />
                     </tr>
                     <tr>
-                        <Distribution />
+                        <Distribution results="4" />
                     </tr>
                 </tbody>
             </table>

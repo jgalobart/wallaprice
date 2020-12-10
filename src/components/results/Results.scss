@@ -7,15 +7,16 @@ tbody th {
     border:1px solid #CCC;
     text-align:center;
     font-size: 0.8em;
-    color:#666;
-    font-weight:normal;
+    font-weight:bold;
+    padding:5px;
+    background: #FFF;
 }
 
 tbody td {
     text-align:center;
     font-weight:bold;
-    font-size:1.4em;
-    padding:5px;
+    font-size:2em;
+    padding:20px 5px;
     border:1px solid #CCC;
     background:#FFF;
 }
@@ -38,15 +39,19 @@ tfoot td {
 
     dl {
         width:320px;
+        background:#FFF;
+        border-radius: 5px;
+        padding:20px 0;
+        font-size:0.9em;
     }
 
     dt {
         color: #666;
         display:block;
         float:left;
-        width:200px;
-        margin-bottom:5px;
-        margin-right:10px;
+        width:180px;
+        margin: 0 10px 5px 0;
+        padding:0;
         text-align:right;
     }
 
