@@ -32,3 +32,27 @@ tfoot td {
     padding:5px;
     text-align:center;
 }
+
+.items {
+    display:flex;
+
+    dl {
+        width:320px;
+    }
+
+    dt {
+        color: #666;
+        display:block;
+        float:left;
+        width:200px;
+        margin-bottom:5px;
+        margin-right:10px;
+        text-align:right;
+    }
+
+    dd {
+        display:block;
+        margin-bottom:5px;
+        font-weight:bold;
+    }
+}

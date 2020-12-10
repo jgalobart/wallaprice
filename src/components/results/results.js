@@ -1,4 +1,6 @@
-import './Results.css';
+import './Results.scss';
+
+import Item from '../item/item';
 
 function PriceBoxes (props) {
     var boxes = []
@@ -40,6 +42,23 @@ export default function Results () {
                     </tr>
                 </tbody>
             </table>
+
+            <div className="items">
+                <Item label="El más barato" />
+                <Item label="Precio habitual" />
+                <dl>
+                    <dt>Precio habitual:</dt>
+                        <dd>350€</dd>
+                    <dt>Rango de precio habitual:</dt>
+                        <dd>300€ - 400€</dd>
+                    <dt>Precio más barato:</dt>
+                        <dd>30€</dd>
+                    <dt>Precio más caro:</dt>
+                        <dd>500€</dd>
+                </dl>
+                <Item label="El más caro" />
+            </div>
+
         </>
     );
 }

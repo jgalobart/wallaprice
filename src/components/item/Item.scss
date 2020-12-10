@@ -1,0 +1,22 @@
+div.item {
+    width:220px;
+    background:#FFF;
+    margin:5px;
+    border-radius:5px;
+    padding:5px;
+
+    img {
+        width:220px;
+    }
+
+    p {
+        color: #666;
+    }
+
+    p.label {
+        font-size: 0.6em;
+        font-weight:bold;
+        margin:2px 0;
+        color: #25C38A;
+    }
+}
