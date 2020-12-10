@@ -1,0 +1,16 @@
+form {
+    display:flex;
+    gap: 10px;
+    width:80%;
+    margin:0 auto;
+}
+
+label {
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+
+input {
+    font-size:1.4em;
+}
