@@ -17,10 +17,11 @@ tbody td {
     font-size:1.4em;
     padding:5px;
     border:1px solid #CCC;
+    background:#FFF;
 }
 
 tbody td:hover {
-    background: #666;
+    background: #25C38A;
     color: #FFF;
     cursor: pointer;
 }
