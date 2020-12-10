@@ -1,9 +1,33 @@
 table {
-    margin:5px 10px;
+    margin:50px 10px;
     width:100%;
 }
 
-td {
+tbody th {
     border:1px solid #CCC;
+    text-align:center;
+    font-size: 0.8em;
+    color:#666;
+    font-weight:normal;
+}
+
+tbody td {
+    text-align:center;
+    font-weight:bold;
+    font-size:1.4em;
+    padding:5px;
+    border:1px solid #CCC;
+}
+
+tbody td:hover {
+    background: #666;
+    color: #FFF;
+    cursor: pointer;
+}
+
+tfoot td {
+    font-weight:normal;
+    color:#666;
+    padding:5px;
     text-align:center;
 }
