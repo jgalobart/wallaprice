@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler
-from selenium import webdriver
+
+import urllib.request
 
 class handler(BaseHTTPRequestHandler):
 
@@ -9,9 +10,8 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
         URL = "https://es.wallapop.com/search?keywords="+search+"min_sale_price="+min_sale_price+"&max_sale_price="+max_sale_price+"&latitude="+latitude+"&longitude="+longitude+"&filters_source=search_box"
         print(URL)
-        browser = webdriver.Firefox()
-        browser.get('http://seleniumhq.org/')
-        data = "test"
+        webURL = urllib.request.urlopen(URL)
+        data = webURL.read()
         print(data)
         self.wfile.write(data)
         print("end")
