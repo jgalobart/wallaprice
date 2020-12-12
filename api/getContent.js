@@ -1,17 +1,9 @@
-const { chromium } = require('playwright-core');
-const awsChromium = require('chrome-aws-lambda');
-
+const playwright = require('playwright-aws-lambda');
 
 async function run () {
-
-    const browser = await chromium.launch({
-        headless: false,
-        executablePath: awsChromium.executablePath,
-    });
-    
     try {
-
         console.log("run")
+        const browser = await playwright.launchChromium();
         console.log("browser")
         const context = await browser.newContext();
 
