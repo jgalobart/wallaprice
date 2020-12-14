@@ -2,43 +2,88 @@ import './Results.scss';
 
 import Item from '../item/item';
 
+import React, { useState } from 'react';
+
+function getQuantityPrices(priceTable) {
+    const prices = Object.keys(priceTable);
+    var quantityPricesTotal = 0;
+    for (var price in prices) {
+        var quantityPrices = priceTable[prices[price]];
+        quantityPricesTotal = quantityPricesTotal + quantityPrices;
+    }
+    return quantityPricesTotal
+}
+
+function getLimits (max,min,results) {
+    var i;
+    const step = (max-min)/results;
+    var limits = [];
+    for (i=0;i<results;i++) {
+        limits[i] = {
+            "start" : i*step+min,
+            "end": i*step+step+min,
+        } 
+    }
+    return limits
+}
+
+
 function PriceBoxes (props) {
     var boxes = []
-    var i;
-    var step = (parseFloat(props.max)-parseFloat(props.min))/props.results;
-    for (i=0;i<props.results;i++) {
-        var start = i*step;
-        var end = i*step+step;
-        boxes.push(<th>{start}€ - {end}€</th>);
+    const limits = getLimits(parseFloat(props.max),parseFloat(props.min),props.results)
+    for (const limit in limits) {
+        var key = Math.floor(Math.random() * 101);
+        boxes.push(<th key={key}>{limits[limit].start}€ - {limits[limit].end}€</th>);
     }
     return boxes;
 }
 
 function Distribution (props) {
     var i;
-    var boxes = []
+    var boxes = [];
+    const limits = getLimits(parseFloat(props.max),parseFloat(props.min),props.results)
     for (i=0;i<props.results;i++) {
-        var distribution = Math.floor(Math.random() * 100);
-        boxes.push(<td>{distribution}%</td>);
+        var distribution = 0;
+        const prices = Object.keys(props.priceTable);
+        var countPrice = 0;
+        for (const price in prices) {
+            if (prices[price] >= parseFloat(limits[i].start) && prices[price] <= parseFloat(limits[i].end)) {
+                var quantityPrices = props.priceTable[prices[price]];
+                console.log("****")
+                console.log(prices[price])
+                console.log(countPrice)
+                console.log(quantityPrices)
+                countPrice=countPrice+quantityPrices;
+                
+            }
+        }
+        const quantityPricesTotal = getQuantityPrices(props.priceTable)
+        console.log("-----")
+        console.log(countPrice)
+        console.log(quantityPricesTotal)
+        distribution =  (countPrice / quantityPricesTotal)*100;
+        var key = Math.floor(Math.random() * 101);
+        boxes.push(<td key={key}>{distribution}%</td>);
     }
     return boxes;
 }
 
-export default function Results () {
+export default function Results (props) {
+
     return (
         <>
             <table>
                 <tfoot>
-                    <td colspan="10">
+                    <td colSpan="10">
                         Haz click en cada rango de precios para ver más detalle
-                        </td>
+                    </td>
                 </tfoot>
                 <tbody>
                     <tr>
-                        <PriceBoxes min="0" max="1000" results="4" />
+                        <PriceBoxes min={props.min_sale_price} max={props.max_sale_price} results="4" />
                     </tr>
                     <tr>
-                        <Distribution results="4" />
+                        <Distribution min={props.min_sale_price} max={props.max_sale_price} results="4" priceTable={props.priceTable} />
                     </tr>
                 </tbody>
             </table>

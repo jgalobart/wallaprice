@@ -29,7 +29,7 @@ exports.handler = async function(event) {
         "&filters_source=quick_filters";
 
     await page.goto(url);
-    /*const result = await page.content();*/
+    //await page.click('text=Ver más productos')
     const cards =await page.$$eval('.card',
         elements => elements.map(
             el => ({
