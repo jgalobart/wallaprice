@@ -40,12 +40,21 @@ exports.handler = async function(event) {
             )
         )
 
-    return {
-        statusCode: 200,
-        body: JSON.stringify({
-            priceTable: getPriceTable(cards),
-            cards: cards,
-            query: event.queryStringParameters,
-        })
-    };
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+        };
+    
+    if (event.httpMethod !== 'POST') {
+        return {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify({
+                priceTable: getPriceTable(cards),
+                cards: cards,
+                query: event.queryStringParameters,
+            })
+        }
+    }
 }
