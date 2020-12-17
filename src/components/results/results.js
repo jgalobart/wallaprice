@@ -63,8 +63,12 @@ function Distribution (props) {
 }
 
 export default function Results (props) {
-
-    if (props.visibility) {
+    if (props.loading) {
+        return(
+            <div>Buscando resultados…</div>
+        )
+    }
+    else if (props.visibility) {
         return (
             <>
                 <table>

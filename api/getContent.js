@@ -21,13 +21,12 @@ exports.handler = async function(event) {
     const max_sale_price = !event.queryStringParameters.max_sale_price ? "10000" : event.queryStringParameters.max_sale_price;
     const latitude = !event.queryStringParameters.latitude ? "40.43786" : event.queryStringParameters.latitude;
     const longitude = !event.queryStringParameters.longitude ? "40.43786" : event.queryStringParameters.longitude;
-    const url = "https://es.wallapop.com/search?keywords="+search+
+    const url = "https://es.wallapop.com/search?distance=10000?keywords="+search+
         "&min_sale_price="+min_sale_price+
         "&max_sale_price="+max_sale_price+
         "&latitude="+latitude+
         "&longitude="+longitude+
         "&filters_source=quick_filters";
-
     await page.goto(url);
     //await page.click('text=Ver más productos')
     const cards =await page.$$eval('.card',

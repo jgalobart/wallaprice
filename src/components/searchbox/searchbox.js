@@ -15,13 +15,13 @@ export default class SearchBox extends React.Component {
             longitude: -2.12345,
             priceTable: [],
             resultsVisibility: false,
+            loadingVisibility: false,
             };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     async getPrices(url) {
-        console.log(url);
         try {
             let response = await fetch(url,{
                 method: 'GET',
@@ -30,6 +30,7 @@ export default class SearchBox extends React.Component {
             data = JSON.parse(data);
             //let data = await JSON.parse(response);
             const priceTable = data.priceTable;
+            delete priceTable[""];
             this.setState({
               priceTable : data.priceTable,
               resultsVisibility: true,
@@ -42,6 +43,27 @@ export default class SearchBox extends React.Component {
             this.setState({ error: 'Unable to fetch data' });
         }
     }
+
+    async getCoords(cp) {
+      try {
+          const url = "https://www.wallaprice.com/.netlify/functions/getCoords?cp="+cp;
+          let response = await fetch(url,{
+              method: 'GET',
+          });
+          let data = await response.text();
+          data = JSON.parse(data);
+          //let data = await JSON.parse(response);
+          const coords = data.coords;
+          this.setState({
+            latitude: coords.lat,
+            longitude: coords.lon,
+          });
+          return coords
+      } catch(e) {
+          console.error(e);
+          this.setState({ error: 'Unable to fetch data' });
+      }
+  }
 
    handleChange(event) {
         const target = event.target;
@@ -56,11 +78,18 @@ export default class SearchBox extends React.Component {
   
    handleSubmit(event) {
         event.preventDefault();
-        const latitude="40.43786";
-        const longitude="-3.81962";
-        //const url = "https://es.wallapop.com/search?keywords="+this.state.item+"&latitude="+latitude+"&longitude="+longitude+"&filters_source=search_box"
-        const url = "https://www.wallaprice.com/.netlify/functions/getContent?search="+encodeURI(this.state.item)
-        const priceTable = this.getPrices(url);
+        if (this.state.item!=="" && this.state.cp.length===5) {
+          this.setState({
+            loadingVisibility: true,
+          })
+          this.getCoords(this.state.cp)
+          const url = "https://www.wallaprice.com/.netlify/functions/getContent?search="+encodeURI(this.state.item)+"&latitude="+this.state.latitude+"&longitude="+this.state.longitude;
+          this.getPrices(url);
+        }
+        else {
+          alert("Revisa los datos");
+        }
+
     }
     
     render() {
@@ -79,7 +108,7 @@ export default class SearchBox extends React.Component {
               <input type="submit" value="Buscar" />
             </form>
 
-            <Results min_sale_price={this.state.min_sale_price} max_sale_price={this.state.max_sale_price} priceTable={this.state.priceTable} visibility={this.state.resultsVisibility}/>
+            <Results min_sale_price={this.state.min_sale_price} max_sale_price={this.state.max_sale_price} priceTable={this.state.priceTable} visibility={this.state.resultsVisibility} loading={this.state.loadingVisibility}/>
           </Suspense>
         </>
       );
