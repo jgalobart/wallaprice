@@ -30,7 +30,7 @@ function PriceBoxes (props) {
     var boxes = []
     const limits = getLimits(parseFloat(props.max),parseFloat(props.min),props.results)
     for (const limit in limits) {
-        var key = Math.floor(Math.random() * 101);
+        var key = Math.floor(Math.random() * 10000);
         boxes.push(<th key={key}>{limits[limit].start}€ - {limits[limit].end}€</th>);
     }
     return boxes;
@@ -52,9 +52,6 @@ function Distribution (props) {
             }
         }
         const quantityPricesTotal = getQuantityPrices(props.priceTable)
-        console.log("-----")
-        console.log(countPrice)
-        console.log(quantityPricesTotal)
         distribution =  (countPrice / quantityPricesTotal)*100;
         var key = Math.floor(Math.random() * 10000);
         boxes.push(<td key={key}>{parseInt(distribution)}%</td>);
@@ -63,9 +60,9 @@ function Distribution (props) {
 }
 
 export default function Results (props) {
-    if (props.loading) {
+    if (props.loading && !props.visibility) {
         return(
-            <div>Buscando resultados…</div>
+            <div id="loading">Buscando resultados…</div>
         )
     }
     else if (props.visibility) {
@@ -88,8 +85,6 @@ export default function Results (props) {
                 </table>
     
                 <div className="items">
-                    <Item label="El más barato" />
-                    <Item label="Precio habitual" />
                     <dl>
                         <dt>Precio habitual:</dt>
                             <dd>350€</dd>
@@ -100,6 +95,8 @@ export default function Results (props) {
                         <dt>Precio más caro:</dt>
                             <dd>500€</dd>
                     </dl>
+                    <Item label="Precio habitual" />
+                    <Item label="El más barato" />
                     <Item label="El más caro" />
                 </div>
     

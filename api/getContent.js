@@ -11,6 +11,8 @@ function getPriceTable(cards) {
 
 exports.handler = async function(event) {
 
+    console.log("test")
+
     const browser = await playwright.launchChromium();
     const context = await browser.newContext();
 
@@ -21,7 +23,7 @@ exports.handler = async function(event) {
     const max_sale_price = !event.queryStringParameters.max_sale_price ? "10000" : event.queryStringParameters.max_sale_price;
     const latitude = !event.queryStringParameters.latitude ? "40.43786" : event.queryStringParameters.latitude;
     const longitude = !event.queryStringParameters.longitude ? "40.43786" : event.queryStringParameters.longitude;
-    const url = "https://es.wallapop.com/search?distance=10000?keywords="+search+
+    const url = "https://es.wallapop.com/search?distance=10000&keywords="+search+
         "&min_sale_price="+min_sale_price+
         "&max_sale_price="+max_sale_price+
         "&latitude="+latitude+
@@ -53,6 +55,7 @@ exports.handler = async function(event) {
                 priceTable: getPriceTable(cards),
                 cards: cards,
                 query: event.queryStringParameters,
+                url: url,
             })
         }
     }

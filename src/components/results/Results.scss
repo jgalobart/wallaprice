@@ -61,3 +61,23 @@ tfoot td {
         font-weight:bold;
     }
 }
+
+@keyframes pulse {
+    from {
+        font-size:1em;
+        color:#AAA;
+    }
+    to {
+        font-size:1.2em;
+        color:#666;
+    }
+  }
+
+div#loading {
+    text-align:center;
+    margin:50px;
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}

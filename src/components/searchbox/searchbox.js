@@ -72,6 +72,7 @@ export default class SearchBox extends React.Component {
         this.setState({
             [name]: value,
             resultsVisibility: false,
+            loadingVisibility: false,
         });
 
    }
