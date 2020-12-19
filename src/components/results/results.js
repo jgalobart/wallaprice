@@ -59,7 +59,43 @@ function Distribution (props) {
     return boxes;
 }
 
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+  }
+
+function getBoundaries(priceTable) {
+    const prices = Object.keys(priceTable);
+    const allPrices = [];
+    for (const price in prices) {
+        for (var count = 0; count < priceTable[prices[price]]; count++) {
+            allPrices.push(prices[price]);
+        }
+    }
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
+
+    const priceCount = Object.values(priceTable).sort();
+    const mode = Math.max(...priceCount);
+
+    const modeKey = getKeyByValue(priceTable,mode);
+
+    const minRangePrices = allPrices[Math.floor(allPrices.length*1/3)]
+    const maxRangePrices = allPrices[Math.floor(allPrices.length*2/3)]
+    //const rangePrices = allPrices.join()
+
+    var rangePrices = ""
+    
+    if (typeof minRangePrices !== 'undefined' && typeof minRangePrices !== 'undefined') {
+        rangePrices = minRangePrices.toString()+"€ - "+maxRangePrices.toString()+"€"
+    } 
+
+    return [min,modeKey,max,rangePrices]
+}
+
 export default function Results (props) {
+
+    const [minPrice,avgPrice,maxPrice,rangePrice] = getBoundaries(props.priceTable);
+
     if (props.loading && !props.visibility) {
         return(
             <div id="loading">Buscando resultados…</div>
@@ -87,13 +123,13 @@ export default function Results (props) {
                 <div className="items">
                     <dl>
                         <dt>Precio habitual:</dt>
-                            <dd>350€</dd>
+                            <dd>{avgPrice}€</dd>
                         <dt>Rango de precio habitual:</dt>
-                            <dd>300€ - 400€</dd>
+                            <dd>{rangePrice}</dd>
                         <dt>Precio más barato:</dt>
-                            <dd>30€</dd>
+                            <dd>{minPrice}€</dd>
                         <dt>Precio más caro:</dt>
-                            <dd>500€</dd>
+                            <dd>{maxPrice}€</dd>
                     </dl>
                     <Item label="Precio habitual" />
                     <Item label="El más barato" />
