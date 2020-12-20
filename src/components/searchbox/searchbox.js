@@ -16,6 +16,7 @@ export default class SearchBox extends React.Component {
             priceTable: [],
             resultsVisibility: false,
             loadingVisibility: false,
+            cards:[],
             };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,8 +32,12 @@ export default class SearchBox extends React.Component {
             //let data = await JSON.parse(response);
             const priceTable = data.priceTable;
             delete priceTable[""];
+            //order cards by price
+            const cards = data.cards.sort((a, b) => (parseFloat(a.price) > parseFloat(b.price)) ? 1 : -1)
+
             this.setState({
               priceTable : data.priceTable,
+              cards : cards,
               resultsVisibility: true,
               min_sale_price: parseInt(Object.keys(priceTable)[0]),
               max_sale_price: parseInt(Object.keys(priceTable)[Object.keys(priceTable).length-1])
@@ -109,7 +114,14 @@ export default class SearchBox extends React.Component {
               <input type="submit" value="Buscar" />
             </form>
 
-            <Results min_sale_price={this.state.min_sale_price} max_sale_price={this.state.max_sale_price} priceTable={this.state.priceTable} visibility={this.state.resultsVisibility} loading={this.state.loadingVisibility}/>
+            <Results 
+              min_sale_price={this.state.min_sale_price} 
+              max_sale_price={this.state.max_sale_price} 
+              priceTable={this.state.priceTable} 
+              visibility={this.state.resultsVisibility} 
+              loading={this.state.loadingVisibility}
+              cards={this.state.cards}
+              />
           </Suspense>
         </>
       );

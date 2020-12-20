@@ -94,14 +94,28 @@ function getBoundaries(priceTable) {
 
 export default function Results (props) {
 
-    const [minPrice,avgPrice,maxPrice,rangePrice] = getBoundaries(props.priceTable);
-
     if (props.loading && !props.visibility) {
         return(
             <div id="loading">Buscando resultados…</div>
         )
     }
     else if (props.visibility) {
+
+        const [minPrice,avgPrice,maxPrice,rangePrice] = getBoundaries(props.priceTable);
+
+        const totalCards = props.cards.length;
+
+        //get Usual Price Cards
+        var usualPriceCards = []
+
+        const cards = props.cards;
+
+        for (var card in cards) {
+            if (cards[card].price == avgPrice) {
+                usualPriceCards.push(cards[card]);
+            }
+        }
+
         return (
             <>
                 <table>
@@ -131,9 +145,9 @@ export default function Results (props) {
                         <dt>Precio más caro:</dt>
                             <dd>{maxPrice}€</dd>
                     </dl>
-                    <Item label="Precio habitual" />
-                    <Item label="El más barato" />
-                    <Item label="El más caro" />
+                    <Item label="Precio habitual" card={props.cards[0]}/>
+                    <Item label="El más barato" card={usualPriceCards[0]} />
+                    <Item label="El más caro" card={props.cards[totalCards-1]} />
                 </div>
     
             </>
