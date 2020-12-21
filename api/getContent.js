@@ -37,6 +37,7 @@ exports.handler = async function(event) {
                 "text": el.innerText,
                 "title": el.innerText.split("\n")[1],
                 "description": el.innerText.split("\n")[3],
+                "img": el.outerHTML.substring(el.outerHTML.indexOf("https"),el.outerHTML.indexOf("?pictureSize")),
                 "content": el.outerHTML,
                 "price": el.innerText.substring(0,el.innerText.indexOf("€")-1),
             })
