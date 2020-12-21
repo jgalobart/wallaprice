@@ -111,7 +111,7 @@ export default function Results (props) {
         const cards = props.cards;
 
         for (var card in cards) {
-            if (cards[card].price == avgPrice) {
+            if (cards[card].price === avgPrice) {
                 usualPriceCards.push(cards[card]);
             }
         }
