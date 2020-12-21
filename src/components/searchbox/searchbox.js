@@ -6,20 +6,31 @@ import './Searchbox.css';
 export default class SearchBox extends React.Component {
     constructor(props) {
         super(props);
+        const urlParams = new URLSearchParams(window.location.search);
+        var item = urlParams.get('search') ? urlParams.get('search') : '';
+        var cp = urlParams.get('cp') ? urlParams.get('cp') : '';
+        var min_sale_price = urlParams.get('min_sale_price') ? urlParams.get('min_sale_price') : 0;
+        var max_sale_price = urlParams.get('max_sale_price') ? urlParams.get('max_sale_price') : 100000;
+        var loading = min_sale_price>0 ? true : false;
         this.state = {
-            item: '',
-            cp: '',
-            min_sale_price: 0,
-            max_sale_price: 10000,
+            item: item,
+            cp: cp,
+            min_sale_price: min_sale_price,
+            max_sale_price: max_sale_price,
             latitude: 40.43786,
             longitude: -2.12345,
             priceTable: [],
             resultsVisibility: false,
-            loadingVisibility: false,
+            loadingVisibility: loading,
             cards:[],
             };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        if (min_sale_price > 0) {
+          this.fetchResults()
+        }
+
     }
 
     async getPrices(url) {
@@ -46,6 +57,7 @@ export default class SearchBox extends React.Component {
         } catch(e) {
             console.error(e);
             this.setState({ error: 'Unable to fetch data' });
+            return false
         }
     }
 
@@ -78,24 +90,33 @@ export default class SearchBox extends React.Component {
             [name]: value,
             resultsVisibility: false,
             loadingVisibility: false,
+            min_sale_price: 0,
+            max_sale_price: 100000,
         });
 
    }
+
+   fetchResults() {
+    if (this.state.item!=="" && this.state.cp.length===5) {
+      this.setState({
+        loadingVisibility: true,
+      })
+      this.getCoords(this.state.cp)
+      const url = "https://www.wallaprice.com/.netlify/functions/getContent?search="+encodeURI(this.state.item)+"&latitude="+this.state.latitude+"&longitude="+this.state.longitude+"&min_sale_price="+this.state.min_sale_price+"&max_sale_price="+this.state.max_sale_price;
+      do {
+        var result = this.getPrices(url)
+        console.log("try again");
+      }
+      while (result === false)
+    }
+    else {
+      alert("Revisa los datos");
+    }
+   }
   
    handleSubmit(event) {
-        event.preventDefault();
-        if (this.state.item!=="" && this.state.cp.length===5) {
-          this.setState({
-            loadingVisibility: true,
-          })
-          this.getCoords(this.state.cp)
-          const url = "https://www.wallaprice.com/.netlify/functions/getContent?search="+encodeURI(this.state.item)+"&latitude="+this.state.latitude+"&longitude="+this.state.longitude;
-          this.getPrices(url);
-        }
-        else {
-          alert("Revisa los datos");
-        }
-
+      event.preventDefault();
+      this.fetchResults();
     }
     
     render() {
@@ -121,6 +142,8 @@ export default class SearchBox extends React.Component {
               visibility={this.state.resultsVisibility} 
               loading={this.state.loadingVisibility}
               cards={this.state.cards}
+              item={this.state.item}
+              cp={this.state.cp}
               />
           </Suspense>
         </>

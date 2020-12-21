@@ -21,10 +21,17 @@ tbody td {
     background:#FFF;
 }
 
+tbody td a {
+    text-decoration:none;
+    color:#333;
+}
+
 tbody td:hover {
     background: #25C38A;
-    color: #FFF;
-    cursor: pointer;
+}
+
+tbody td:hover a {
+    color:#FFF;
 }
 
 tfoot td {

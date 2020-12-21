@@ -41,6 +41,8 @@ function Distribution (props) {
     var boxes = [];
     const limits = getLimits(parseFloat(props.max),parseFloat(props.min),props.results)
     for (i=0;i<props.results;i++) {
+        var params = "?search="+props.item;
+        params = params+"&cp="+props.cp;
         var distribution = 0;
         const prices = Object.keys(props.priceTable);
         var countPrice = 0;
@@ -48,13 +50,14 @@ function Distribution (props) {
             if (prices[price] >= parseFloat(limits[i].start) && prices[price] <= parseFloat(limits[i].end)) {
                 var quantityPrices = props.priceTable[prices[price]];
                 countPrice=countPrice+quantityPrices;
-                
             }
         }
+        params = params + "&min_sale_price=" + limits[i].start;
+        params = params + "&max_sale_price=" + limits[i].end;
         const quantityPricesTotal = getQuantityPrices(props.priceTable)
         distribution =  (countPrice / quantityPricesTotal)*100;
         var key = Math.floor(Math.random() * 10000);
-        boxes.push(<td key={key}>{parseInt(distribution)}%</td>);
+        boxes.push(<td key={key}><a href={params}>{parseInt(distribution)}%</a></td>);
     }
     return boxes;
 }
@@ -120,16 +123,29 @@ export default function Results (props) {
             <>
                 <table>
                     <tfoot>
-                        <td colSpan="10">
-                            Haz click en cada rango de precios para ver más detalle
-                        </td>
+                        <tr>
+                            <td colSpan="10">
+                                Haz click en cada rango de precios para ver más detalle
+                            </td>
+                        </tr>
                     </tfoot>
                     <tbody>
                         <tr>
-                            <PriceBoxes min={props.min_sale_price} max={props.max_sale_price} results="4" />
+                            <PriceBoxes 
+                                min={props.min_sale_price} 
+                                max={props.max_sale_price} 
+                                results="4" 
+                                />
                         </tr>
                         <tr>
-                            <Distribution min={props.min_sale_price} max={props.max_sale_price} results="4" priceTable={props.priceTable} />
+                            <Distribution 
+                                min={props.min_sale_price} 
+                                max={props.max_sale_price} 
+                                results="4" 
+                                priceTable={props.priceTable} 
+                                item={props.item} 
+                                cp={props.cp} 
+                                />
                         </tr>
                     </tbody>
                 </table>
